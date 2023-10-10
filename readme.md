@@ -9,7 +9,11 @@
 管理员：员工管理、部门管理、考勤管理、请假管理等
 
 员工：添加请假、出差、补卡、打卡等信息
+## 获取方式
 
+扫描下方，回复关键词  ：**员工** ，获取完整版源码
+
+![https://gitee.com/](https://project-images-1256969109.cos.ap-chongqing.myqcloud.com/Typora-Images/202205281253739.png)
 
 ## 2、项目技术
 
