@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eams.dao.CommissionerDao">
+ 
+    <select id="getLIst"  resultType="Commissioner" parameterType="Commissioner">
+        select * from g_commissioner 
+        <if test="c_codejob != null">
+                WHERE c_codejob =#{c_codejob}
+        </if>
+    </select>
+    <select id="getCommissioner" resultType="Commissioner" parameterType="Commissioner">
+     select * from g_commissioner where c_id=#{c_id}
+    </select>
+    <insert id="insrtCommissioner" parameterType="Commissioner">
+    INSERT INTO g_commissioner (c_phone,c_name,c_address,c_codejob,create_time)  
+    VALUES(
+		#{c_phone}, 	
+		#{c_name}, 	
+		#{c_address}, 	
+ 		#{c_codejob},
+ 		 NOW()
+ 		);
+    </insert>
+    <delete id="delCommissioner" parameterType="Commissioner">
+    	DELETE FROM  g_commissioner WHERE  c_codejob=#{c_codejob}  AND c_name=#{c_name}
+    </delete>
+</mapper>

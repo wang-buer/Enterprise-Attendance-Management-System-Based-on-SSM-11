@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eams.dao.AdeptDao">
+	<resultMap type="com.eams.model.Adept" id="reultAdept">
+	<id property="adept_id" column="adept_id"/>
+	<result property="adept_name" column="adept_name"/>
+	<result property="adept_ads" column="adept_ads"/>
+	<result property="employee_id" column="employee_id"/>	
+	</resultMap>
+   
+    <select id="getAdept"  parameterType="Integer"    resultType="com.eams.model.Adept" >
+		SELECT * FROM g_adept   WHERE adept_id=#{param}
+    </select>
+
+	<select id="getAdeptCode" resultType="com.eams.model.Adept">
+	SELECT t.`adept_id`,t.`adept_name` FROM  g_adept t
+	</select>
+	<select id="getAdeptList" resultType="com.eams.model.Adept" parameterType="com.eams.model.PageCount">
+	select adept_id,adept_name,adept_ads  from g_adept  where 1=1 
+	<if test="id != null ">
+	and  adept_id like concat('%', #{id},'%')
+	</if>
+	<if test="name != null ">
+	and adept_name  like concat('%',#{name},'%')
+	</if>
+	  limit #{page},#{pageSize}
+	</select>
+	<select id="getAdeptCount" resultType="Integer">
+	select count(1) as count from g_adept
+	</select>
+	<delete id="delAdept" parameterType="Integer">
+	DELETE FROM G_ADEPT WHERE adept_id=#{adept_id} 
+	</delete>
+	<update id="updateAdept" parameterType="com.eams.model.Adept">
+	update G_ADEPT 
+	<set>
+	<if test="adept_name != null ">
+	adept_name = #{adept_name},
+	</if>
+	<if test=" adept_ads != null ">
+	adept_ads =#{adept_ads}
+	</if>
+	</set>
+	
+	where  adept_id =#{adept_id}
+	</update>
+	<insert id="insertAdept" parameterType="com.eams.model.Adept">
+	insert into G_ADEPT 
+	(adept_name,adept_ads) value(#{adept_name},#{adept_ads})
+	
+	</insert>
+</mapper>

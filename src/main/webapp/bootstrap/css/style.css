@@ -1,0 +1,5 @@
+.img_wrap{
+     display: table-cell; //主要是这个属性
+     vertical-align: middle;
+     text-align: center;
+}

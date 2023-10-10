@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eams.dao.PunchDao">
+	<resultMap type="com.eams.model.Punch" id="reultAdept">
+	<id property="id" column="id"/>
+	<result property="forenoon_date" column="forenoon_date"/>
+	<result property="afternoon_date" column="afternoon_date"/>
+	<result property="emp_id" column="emp_id"/>	
+	<result property="punch_date" column="punch_date"/>	
+	</resultMap>
+   
+   <insert id="punchInsert" parameterType="com.eams.model.Punch">
+   insert into g_punch (forenoon_date,afternoon_date,emp_id,ename,menth,punch_date)
+   value(#{forenoon_date},#{afternoon_date},#{emp_id},#{ename},#{menth},#{punch_date})  
+   </insert>
+   <select id="getPunch" resultType="com.eams.model.Punch" parameterType="com.eams.model.PageCount">
+   select * from g_punch
+   <where>
+   menth =#{menth}
+   <if test="id != null">
+  and  emp_id = #{id} 
+   </if>
+   </where>
+   		limit #{page},#{pageSize}
+   </select>
+    <select id="getPunchListbean" resultType="com.eams.model.Punch" parameterType="com.eams.model.PageCount">
+SELECT COUNT(h.`afternoon_date`) AS afternoonCount,h.`emp_id`,h.`ename`,h.`punch_date` ,h.`menth` FROM g_punch  h GROUP BY h.`emp_id`
+<if test="menth != null">
+HAVING h.`menth`=#{menth}
+</if>
+   		limit #{page},#{pageSize}
+   </select>
+   
+   <select id="getPunchCount" resultType="Integer">
+   select count(1) as count from g_punch
+   </select>
+   <update id="updatePunch" parameterType="com.eams.model.Punch">
+    update g_punch     
+    <set>
+	<if test="forenoon_date != null">
+	forenoon_date = #{forenoon_date},
+	</if>    
+   	<if test="afternoon_date != null">
+	afternoon_date = #{afternoon_date},
+	</if> 
+    </set>
+    <where>	 
+    punch_date =#{punch_date}
+    </where>
+   </update>
+   <select id="selectPunchDate" resultType="com.eams.model.Punch" parameterType="com.eams.model.Punch">
+   select id from  g_punch where punch_date =#{punch_date} and emp_id =#{emp_id}
+   </select>
+   
+   <select id="getPunchDateCount" parameterType="com.eams.model.Punch" resultType="com.eams.model.Punch">
+   SELECT t.afternoonCount,f.forenoonCount  FROM (SELECT COUNT(h.`afternoon_date`) AS afternoonCount FROM g_punch h WHERE h.`punch_date`=#{punch_date}) t,(SELECT COUNT(l.`forenoon_date`) AS forenoonCount FROM g_punch l WHERE l.`punch_date`=#{punch_date}) f
+   
+   </select>
+   
+   
+</mapper>

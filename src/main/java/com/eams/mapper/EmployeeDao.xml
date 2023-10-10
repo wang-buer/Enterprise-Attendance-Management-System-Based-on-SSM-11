@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eams.dao.EmployeeDao">
+    <select id="getEmployeeAll"  resultType="com.eams.model.Employee" parameterType="com.eams.model.PageCount">
+		SELECT  t.*,p.adept_name as deptname FROM employee t LEFT JOIN g_adept p ON  t.adept_code=p.adept_id   where  1=1 
+		
+		   <if test="id != null">
+        and 	t.employee_id  like concat('%', #{id} , '%') 
+        </if>
+          <if test="name != null">
+        and     t.employee_name like concat('%', #{name}, '%') 
+        
+        </if>
+		
+		 limit    #{page},#{pageSize};
+    </select>
+    <select id="getCount"  resultType="Integer">
+    SELECT  COUNT(1) as countNum FROM employee  
+    </select>
+    <select id="getEmployee"  parameterType="Employee" resultType="Employee" >
+		SELECT * FROM employee   WHERE employee_id=#{employee_id}
+    </select>
+    <delete id="delEmployee"  parameterType="Employee">
+    	DELETE FROM employee  WHERE employee_id=#{employee_id}
+    </delete>
+    <update id="updateEmployee" parameterType="Employee">
+    	UPDATE  employee
+    	<set>
+    	<if test="employee_name != null"> 
+    	employee_name=#{employee_name},
+    	</if>
+    	<if test="adept_code != null">
+    	adept_code=#{adept_code},
+    	</if>
+    	<if test="phone != null">
+    	phone=#{phone},
+    	</if>
+    	<if test="join_time !=null">
+    	join_time=#{join_time},
+    	</if>
+    	<if test="number != null">
+    	number=#{number},
+    	 </if>
+    	<if test="employee_number !=null">
+    	employee_number=#{employee_number},
+    	 </if>
+    	 sex=#{sex}
+    	</set> 
+    	where  employee_id=#{employee_id}
+    </update>
+	<insert id="insertEmployee" parameterType="Employee">
+		INSERT INTO employee (employee_name,adept_code,sex,phone,number,join_time)
+		VALUE(
+		<if test="employee_name !=null">
+		#{employee_name},
+		</if>
+		<if test="adept_code !=null">
+		#{adept_code},
+		</if>
+		<if test="sex !=null">
+		#{sex},
+		</if>
+		<if test="phone !=null">
+		#{phone},
+		</if>
+		<if test="number !=null">
+		#{number},
+		</if>
+		#{join_time}
+		
+		)
+		
+	</insert>
+</mapper>

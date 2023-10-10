@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eams.dao.ReceiptsDao">
+
+	<select id="getReceiptsList" resultType="com.eams.model.Receipts" parameterType="com.eams.model.PageCount">
+	select *  from receipts  where 1=1  
+	<if test="id != null">
+		and  eid =#{id}
+	</if>
+	  limit #{page},#{pageSize}
+	</select>
+	<select id="getReceiptsCount" resultType="Integer">
+	select count(1) as count from receipts
+	</select>
+	<delete id="delReceipts" parameterType="Integer">
+	DELETE FROM receipts WHERE id=#{id} 
+	</delete>
+	<insert id="insertReceipts" parameterType="com.eams.model.Receipts">
+	insert into receipts 
+	<trim prefix="(" suffix=")" suffixOverrides="," >
+	<if test="eid !=null">
+		eid,
+	</if>
+	<if test="start_time !=null">
+	start_time,
+	</if>
+	<if test="end_time !=null">end_time,</if>
+	<if test="ename !=null">ename,</if>
+	<if test="leave_type != null">leave_type,</if>
+	<if test="leave_day != null">leave_day,</if>
+	<if test="describes != null">describes,</if>
+	<if test="evection_day !=null">evection_day,</if>
+	<if test="forget_data !=null">forget_data,</if>
+	<if test="affert_data !=null">affert_data,</if>
+	<if test="afternoon_data !=null">afternoon_data,</if>
+	<if test="site !=null">site,</if>
+	<if test="expense !=null">expense,</if>
+	e_status,
+	status_name,
+	create_data
+	</trim>
+	<trim prefix="values (" suffix=")" suffixOverrides="," >
+	<if test="eid !=null">#{eid},</if>
+	<if test="start_time !=null">#{start_time},</if>
+	<if test="end_time !=null">#{end_time},</if>
+	<if test="ename !=null">#{ename},</if>
+	<if test="leave_type !=null">#{leave_type},</if>
+	<if test="leave_day !=null">#{leave_day},</if>
+	<if test="describes !=null">#{describes},</if>
+	<if test="evection_day !=null">#{evection_day},</if>
+	<if test="forget_data !=null">#{forget_data},</if>
+	<if test="affert_data !=null">#{affert_data},</if>
+	<if test="afternoon_data !=null">#{afternoon_data},</if>
+	<if test="site !=null">#{site},</if>
+	<if test="expense !=null">#{expense},</if>
+	#{e_status},
+	#{status_name},
+	#{create_data}
+	</trim>
+	</insert>
+	<update id="updateReceipts" parameterType="com.eams.model.Receipts">
+	
+	update receipts <set>
+	status_name=#{status_name}
+	,e_status=#{e_status}
+	</set>
+	where id=#{id}  and eid=#{eid}
+	</update>
+</mapper>

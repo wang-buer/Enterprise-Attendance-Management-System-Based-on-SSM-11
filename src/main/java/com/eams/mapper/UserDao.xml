@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eams.dao.UserDao">
+    <resultMap type="com.eams.model.User" id="userResultMap">
+      <id property="id" column="id"/>
+      <result property="loginId" column="loginid"/>
+      <result property="passWord" column="passWord"/> 
+      <result property="deptId" column="deptid"/>
+      <result property="deptCode" column="deptcode"/>
+      <result property="g_role_status" column="g_role_status"/>
+      <result property="employee_id" column="employee_id"/>
+      <result property="login_name" column="login_name"/>
+      <result property="job_number" column="job_number"/>
+      <result property="role_name" column="role_name"/>
+      <result property="c_id" column="c_id"/>
+      </resultMap>
+    
+    <select id="login" resultMap="userResultMap" parameterType="com.eams.model.User">
+        select * from g_user where loginid=#{loginId} and  passWord=#{passWord} LIMIT 0,1
+    </select>
+     <select id="loginList" resultMap="userResultMap" parameterType="com.eams.model.User">
+        select * from g_user where 1=1      
+        <if test="login_name != null">
+        and  login_name like concat('%', #{login_name} , '%') 
+        </if>
+          <if test="job_number != null">
+        and  job_number like concat('%', #{job_number}, '%') 
+        
+        </if>
+        limit #{page},#{pageSize} 
+    </select>
+    <insert id="insertUser" parameterType="User">
+    Insert INTO g_user (loginId,passWord,g_role_status,login_name,job_number,role_name)
+    VALUE(#{loginId},#{passWord},#{g_role_status},#{login_name},#{job_number},#{role_name})
+    </insert>
+    <update id="updateUser" parameterType="User">
+    UPDATE G_USER 
+    <set>
+    <if test="loginId !=null">
+    loginId=#{loginId},
+    </if>
+    <if test="passWord !=null">
+    passWord=#{passWord},
+    </if>
+    <if test="g_role_status !=null">
+    g_role_status=#{g_role_status},
+    </if>
+    <if test="login_name !=null">
+    login_name=#{login_name},
+    </if>
+    <if test="job_number !=null">
+    job_number=#{job_number},
+    </if>
+    role_name=#{role_name}
+    </set>
+    where id=#{id}
+    </update>
+    <delete id="delUser" parameterType="User">
+    DELETE FROM G_USER WHERE id=#{id}
+    </delete>
+    <select id="selectcountUser"  resultType="Integer">
+	SELECT COUNT(*)  AS counts FROM g_user
+    </select>
+    </mapper>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eams.dao.StatisticsDao">
+
+
+	<select id="getStatisticsList" resultType="com.eams.model.Statistics" parameterType="com.eams.model.PageCount">
+	select Statistics_id,Statistics_name,Statistics_ads  from g_Statistics  where 1=1 
+	<if test="id != null ">
+	and  Statistics_id like concat('%', #{id},'%')
+	</if>
+	<if test="name != null ">
+	and Statistics_name  like concat('%',#{name},'%')
+	</if>
+	  limit #{page},#{pageSize}
+	</select>
+	<select id="getStatisticsCount" resultType="Integer">
+	select count(1) as count from g_Statistics
+	</select>
+	
+
+	<insert id="insertStatistics" parameterType="com.eams.model.Statistics">
+	insert into statistics 
+	(eid,e_name,present,leave_day,evection,forget,Forget_data,create_date) 
+	value(#{eid},#{e_name},#{present},#{leave_day},#{evection},#{forget},#{Forget_data},#{create_date})
+	
+	</insert>
+</mapper>
